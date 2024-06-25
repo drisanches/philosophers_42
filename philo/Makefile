@@ -6,18 +6,19 @@
 #    By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/28 11:27:02 by dde-fati          #+#    #+#              #
-#    Updated: 2024/06/20 23:04:28 by dde-fati         ###   ########.fr        #
+#    Updated: 2024/06/24 23:19:44 by dde-fati         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-SRC = philo.c
+SRC = philo.c \
+      exit_error.c
 	  
 OBJ = $(SRC:.c=.o)
 
 CC = cc
-C_FLAGS = -Wall -Wextra -Werror
+C_FLAGS = -Wall -Wextra -Werror -pthread
 RM = rm -rf
 
 all: $(NAME)

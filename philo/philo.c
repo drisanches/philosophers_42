@@ -6,35 +6,45 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:20 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/06/21 00:32:07 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/06/25 00:01:03 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+pthread_mutex_t	mutex;
+
 void	*thread_function(void *tid)
 {
 	long int	id;
 	
+	pthread_mutex_lock(&mutex);
 	id = (long int)tid;
 	printf("This is thread: %ld\n", id);
+	pthread_mutex_unlock(&mutex);
+	return (NULL);
 }
 
 int	main(void)
 {
-	pthread_t	tid0; // estrutura que define uma thread
-	pthread_t	tid1;
-	pthread_t	tid2;
-	pthread_t	*pthreads[] = {&tid0, &tid1, &tid2};
-	int			i;
+	pthread_t		threads[3];
+	int				i;
 
-	i = -1;
-	while (++i < 3)
+	i = 0;
+	pthread_mutex_init(&mutex, NULL);
+	while (i < 3)
 	{
-		// inicializando a nova thread
-		pthread_create(pthreads[i], NULL, thread_function, (void *)pthreads[i]);
-		pthread_detach(*pthreads[i]);
+		if (pthread_create(&threads[i], NULL, &thread_function, (void *)(long)i) != 0)
+			return (exit_error(1));
+		i++;
 	}
-	pthread_exit(NULL); // espera a thread ser executada
-	return (0);
+	i = 0;
+	while (i < 3)
+	{
+		if (pthread_join(threads[i], NULL) != 0)
+			return (exit_error(2));
+		i++;
+	}
+	pthread_mutex_destroy(&mutex);
+	return (EXIT_SUCCESS);
 }
