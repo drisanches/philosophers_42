@@ -6,13 +6,13 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 23:05:38 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/06/24 23:06:01 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/06/25 22:44:27 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	exit_error(int code)
+int	exit_error(int code, t_data *data)
 {
 	if (code = 1)
 		printf("Failed to create thread\n");	
@@ -20,5 +20,6 @@ int	exit_error(int code)
 		printf("Failed to join thread\n");
 	else if (code = 3)
 		printf("Failed to detach thread\n");
+	free(data);
 	return (code);
 }
