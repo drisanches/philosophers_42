@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 23:05:38 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/06/25 22:44:27 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/06/26 00:26:42 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	exit_error(int code, t_data *data)
 {
-	if (code = 1)
+	if (code == 1)
 		printf("Failed to create thread\n");	
-	else if (code = 2)
+	else if (code == 2)
 		printf("Failed to join thread\n");
-	else if (code = 3)
+	else if (code == 3)
 		printf("Failed to detach thread\n");
 	free(data);
 	return (code);
