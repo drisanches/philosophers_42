@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:20 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/06/25 00:01:03 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/06/25 21:36:23 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	*thread_function(void *tid)
 {
 	long int	id;
 	
-	pthread_mutex_lock(&mutex);
 	id = (long int)tid;
 	printf("This is thread: %ld\n", id);
 	pthread_mutex_unlock(&mutex);
@@ -34,6 +33,7 @@ int	main(void)
 	pthread_mutex_init(&mutex, NULL);
 	while (i < 3)
 	{
+		pthread_mutex_lock(&mutex);
 		if (pthread_create(&threads[i], NULL, &thread_function, (void *)(long)i) != 0)
 			return (exit_error(1));
 		i++;
