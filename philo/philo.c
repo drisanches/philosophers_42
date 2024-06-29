@@ -6,27 +6,36 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:20 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/06/26 00:01:43 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/06/29 17:33:26 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	init_data(t_data **data)
+/*long int	get_current_time_milisec(t_data *data)
+{
+
+}*/
+
+int	init_data(t_data **data)
 {
 	*data = malloc(sizeof(t_data));
+	if (gettimeofday(&(*data)->time, NULL) == -1)
+		exit_error(4, *data);
 	pthread_mutex_init(&(*data)->mutex, NULL);
 	(*data)->num = 0;
+	(*data)->cur_time = 0;
+	return (EXIT_SUCCESS);
 }
 
 void	*routine(void *arg)
 {
-	t_data		*data;
-	
+	t_data			*data;
+
 	data = (t_data *)arg;
-	printf("Philosopher %d is eating\n", data->num);
-	printf("Philosopher %d is sleeping\n", data->num);
-	printf("Philosopher %d is thinking\n", data->num);
+	printf("%ld Philosopher %d is eating\n", data->time.tv_sec, data->num);
+	printf("%ld Philosopher %d is sleeping\n", data->time.tv_sec, data->num);
+	printf("%ld Philosopher %d is thinking\n", data->time.tv_sec, data->num);
 	pthread_mutex_unlock(&data->mutex);
 	return (NULL);
 }
@@ -37,7 +46,8 @@ int	main(void)
 	t_data			*data;
 	int				i;
 
-	init_data(&data);
+	if (init_data(&data) == 1)
+		return (EXIT_FAILURE);
 	while (data->num < 3)
 	{
 		pthread_mutex_lock(&data->mutex);
