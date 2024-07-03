@@ -6,13 +6,13 @@
 #    By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/28 11:27:02 by dde-fati          #+#    #+#              #
-#    Updated: 2024/06/26 00:52:00 by dde-fati         ###   ########.fr        #
+#    Updated: 2024/07/03 00:10:25 by dde-fati         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := philo
 
-SRC := $(addsuffix .c, philo exit_error)
+SRC := $(addsuffix .c, philo time exit_error ft_atol ft_isdigit)
 OBJ_FOLDER := obj
 OBJ := $(SRC:%.c=$(OBJ_FOLDER)/%.o)
 
@@ -40,7 +40,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re
 
 #Colors
 GR      = \033[32;1m

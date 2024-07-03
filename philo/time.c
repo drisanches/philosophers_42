@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_error.c                                       :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/24 23:05:38 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/02 23:59:42 by dde-fati         ###   ########.fr       */
+/*   Created: 2024/07/02 22:38:25 by dde-fati          #+#    #+#             */
+/*   Updated: 2024/07/03 00:08:46 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	exit_error(int code, t_data *data)
+long long int	current_time_ms(void)
 {
-	if (code == -1)
-		printf("Invalid arguments\n");
-	else if (code == 1)
-		printf("Failed to create thread\n");
-	else if (code == 2)
-		printf("Failed to join thread\n");
-	else if (code == 3)
-		printf("Failed to detach thread\n");
-	else if (code == 4)
-		printf("Failed to get time of day\n");
-	if (data)
-		free(data);
-	return (code);
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + time.tv_sec / 1000);
+}
+
+long long int	elapsed_time_ms(long long int start_time)
+{
+	return ((current_time_ms() - start_time));
+}
+
+int	msleep(long long int time_in_ms)
+{
+	return (usleep(time_in_ms * 1000));
 }
