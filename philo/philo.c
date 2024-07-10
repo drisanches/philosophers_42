@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:20 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/05 01:18:45 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/10 00:33:36 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void	init_philos(t_data *data)
 		data->philos[i].status = 0;
 		data->philos[i].time_to_die = data->time_to_die;
 		data->philos[i].data = data;
+		pthread_mutex_init(&data->philos[i].lock, NULL);
+		
 	}
 }
 int	init_all(t_data *data, char **argv)
@@ -94,6 +96,32 @@ int	init_all(t_data *data, char **argv)
 	init_philos(data);
 	return (EXIT_SUCCESS);
 }
+
+int	init_threads(t_data *data)
+{
+	pthread_t	t0;
+	int			i;
+
+	data->start_time = current_time_ms();
+	if (data->num_meals > 0)
+	{
+		if (pthread_create(t0, NULL, &monitor, data->philos[0]))
+			return (exit_error("Failed to create thread", data));
+	}
+	i = -1;
+	while (++i < data->num_philos)
+	{
+		if (pthread_create(data->threads[i], NULL, &routine, data))
+			return (exit_error("Failed to create thread", data));
+	}
+	i = -1;
+	while (++i < data->num_philos)
+	{
+		if (pthread_join(data->threads[i], NULL))
+			return (exit_error("Failed to join thread", data));
+	}
+}
+
 int	check_args(int argc, char **argv)
 {
 	long int	nbr;
@@ -125,6 +153,18 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
+int	one_philo_routine(t_data *data)
+{
+	data->start_time = current_time_ms();
+	if (pthread_create(&data->threads[0], NULL, &routine, &data->philos[0]))
+		return (exit_error("Failed to create thread", data));
+	pthread_detach(data->threads[0]);
+	while (data->is_dead == 0)
+		ft_usleep(0);
+	clear(data); // --> criar função pra dar free na struct
+	return (EXIT_SUCCESS);
+}
+
 int	main(int argc, char **argv)
 {
 	t_data			*data;
@@ -135,18 +175,9 @@ int	main(int argc, char **argv)
 		return (exit_error("Invalid arguments", NULL));
 	if (init_all(data, argv))
 		return (exit_error("Failed to init data", NULL));
-	i = -1;
-	while (++i < data->num_philos)
-	{
-		if (pthread_create(data->threads[i], NULL, &routine, data))
-			return (exit_error("Failed to create thread", data));
-	}
-	i = -1;
-	while (++i < data->num_philos)
-	{
-		if (pthread_join(data->threads[i], NULL))
-			return (exit_error("Failed to join thread", data));
-	}
+	if (data->num_philos == 1)
+		return(one_philo_routine(&data));
+	
 	pthread_mutex_destroy(&data->print);
 	free(data);
 	return (EXIT_SUCCESS);

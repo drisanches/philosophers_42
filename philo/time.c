@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:38:25 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/03 00:08:46 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/10 00:24:54 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,14 @@ long long int	elapsed_time_ms(long long int start_time)
 int	msleep(long long int time_in_ms)
 {
 	return (usleep(time_in_ms * 1000));
+}
+
+int	ft_usleep(__useconds_t time)
+{
+	long long int	start;
+
+	start = current_time_ms();
+	while (current_time_ms() - start < time)
+		usleep(time / 10);
+	return (EXIT_SUCCESS);
 }
