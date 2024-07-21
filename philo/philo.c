@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:20 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/10 00:33:36 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/21 13:28:56 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	alloc_data(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-int	init_foks(t_data *data)
+int	init_forks(t_data *data)
 {
 	int	i;
 
@@ -140,31 +140,6 @@ int	check_args(int argc, char **argv)
 }
 
 
-void	*routine(void *arg)
-{
-	t_data			*data;
-
-	data = (t_data *)arg;
-	pthread_mutex_lock(&data->print);
-	printf("%ld Philosopher %d is eating\n", data->start_time, data->num_philos);
-	printf("%ld Philosopher %d is sleeping\n", elapsed_time_ms(data->start_time), data->num);
-	printf("%ld Philosopher %d is thinking\n", elapsed_time_ms(data->start_time), data->num);
-	pthread_mutex_unlock(&data->print);
-	return (NULL);
-}
-
-int	one_philo_routine(t_data *data)
-{
-	data->start_time = current_time_ms();
-	if (pthread_create(&data->threads[0], NULL, &routine, &data->philos[0]))
-		return (exit_error("Failed to create thread", data));
-	pthread_detach(data->threads[0]);
-	while (data->is_dead == 0)
-		ft_usleep(0);
-	clear(data); // --> criar função pra dar free na struct
-	return (EXIT_SUCCESS);
-}
-
 int	main(int argc, char **argv)
 {
 	t_data			*data;
@@ -177,7 +152,6 @@ int	main(int argc, char **argv)
 		return (exit_error("Failed to init data", NULL));
 	if (data->num_philos == 1)
 		return(one_philo_routine(&data));
-	
 	pthread_mutex_destroy(&data->print);
 	free(data);
 	return (EXIT_SUCCESS);

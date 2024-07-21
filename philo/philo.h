@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:30 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/10 00:24:31 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:40:56 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <limits.h>
+
+# define FORKS_TAKEN "has taken a fork"
+# define SLEEPING "is sleeping"
+# define EATING "is eating"
+# define THINKING "is thinking"
+# define DIED "died"
 
 typedef struct s_philo
 {
@@ -57,6 +63,10 @@ long long int	current_time_ms(void);
 long long int	elapsed_time_ms(long long int start_time);
 int				msleep(long long int time_in_ms);
 int				ft_usleep(__useconds_t time);
+
+/*Threads Routines*/
+int				one_philo_routine(t_data *data);
+void			*routine(void *args);
 
 /*Error Functions*/
 int				exit_error(char *msg, t_data *data);
