@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:30 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/21 15:40:56 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:48:12 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ int				exit_error(char *msg, t_data *data);
 /*Utils*/
 int				ft_isdigit(int c);
 long int		ft_atol(const char *nptr);
+int				ft_strcmp(const char *s1, const char *s2);
 
 #endif
