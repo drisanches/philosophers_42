@@ -6,13 +6,13 @@
 #    By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/28 11:27:02 by dde-fati          #+#    #+#              #
-#    Updated: 2024/07/03 00:10:25 by dde-fati         ###   ########.fr        #
+#    Updated: 2024/07/21 18:09:11 by dde-fati         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := philo
 
-SRC := $(addsuffix .c, philo time exit_error ft_atol ft_isdigit)
+SRC := $(addsuffix .c, philo init routines actions time exit_error ft_atol ft_isdigit ft_strcmp)
 OBJ_FOLDER := obj
 OBJ := $(SRC:%.c=$(OBJ_FOLDER)/%.o)
 

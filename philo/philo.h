@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:30 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/21 17:37:46 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:42:07 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@
 # define THINKING "is thinking"
 # define DIED "died"
 
+struct s_data;
+
 typedef struct s_philo
 {
-	t_data			*data;
+	struct s_data	*data;
 	pthread_t		t0;
 	int				id;
 	int				status;
@@ -58,6 +60,13 @@ typedef struct s_data
 	pthread_mutex_t	lock;
 }					t_data;
 
+/*Init Functions*/
+int				alloc_data(t_data *data);
+int				init_data(t_data *data, char **argv);
+int				init_forks(t_data *data);
+void			init_philos(t_data *data);
+int				init_threads(t_data *data);
+
 /*Time Functions*/
 long long int	current_time_ms(void);
 long long int	elapsed_time_ms(long long int start_time);
@@ -70,6 +79,9 @@ void			*routine(void *args);
 void			*supervisor(void *args);
 void			*monitor(void *args);
 void			print_message(char *msg, t_philo *philo);
+void			eat(t_philo *philo);
+void			take_forks(t_philo *philo);
+void			drop_forks(t_philo *philo);
 
 /*Exit Functions*/
 int				exit_error(char *msg, t_data *data);

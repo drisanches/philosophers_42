@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 13:28:16 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/21 17:22:54 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:40:48 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int one_philo_routine(t_data *data)
 	pthread_detach(data->threads[0]);
 	while (data->is_dead == 0)
 		ft_usleep(0);
-	clear(data); // --> criar função pra dar free na struct
+	clear_data(data);
 	return (EXIT_SUCCESS);
 }
 
