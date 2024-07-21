@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 22:38:25 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/10 00:24:54 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:28:09 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ long long int	current_time_ms(void)
 {
 	struct timeval	time;
 
-	gettimeofday(&time, NULL);
+	if (gettimeofday(&time, NULL))
+		return (exit_error("Fail to get current time", NULL));
 	return (time.tv_sec * 1000 + time.tv_sec / 1000);
 }
 

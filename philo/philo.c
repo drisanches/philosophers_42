@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:20 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/21 13:28:56 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:38:00 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,15 @@ int	init_data(t_data *data, char **argv)
 	if (!data)
 		return (EXIT_FAILURE);
 	data->num_philos = (int)ft_atol(argv[1]);
-	data->time_to_die = ft_atol(argv[2]);
-	data->time_to_eat = ft_atol(argv[3]);
-	data->time_to_sleep = ft_atol(argv[4]);
+	data->death_time = ft_atol(argv[2]);
+	data->eat_time = ft_atol(argv[3]);
+	data->sleep_time = ft_atol(argv[4]);
 	if (argv[5])
 		data->num_meals = (int)ft_atol(argv[5]);
 	else
 		data->num_meals = 0;
-	if (data->num_philos <= 0 || data->num_philos > 200 || data->time_to_die < 0 
-		|| data->time_to_eat < 0 || data->time_to_sleep < 0)
+	if (data->num_philos <= 0 || data->num_philos > 200 || data->death_time < 0 
+		|| data->eat_time < 0 || data->sleep_time < 0)
 		return(EXIT_FAILURE);
 	data->start_time = current_time_ms();
 	data->is_dead = 0;
@@ -79,10 +79,9 @@ void	init_philos(t_data *data)
 		data->philos[i].eat_count = 0;
 		data->philos[i].is_eating = 0;
 		data->philos[i].status = 0;
-		data->philos[i].time_to_die = data->time_to_die;
+		data->philos[i].time_to_die = data->death_time;
 		data->philos[i].data = data;
 		pthread_mutex_init(&data->philos[i].lock, NULL);
-		
 	}
 }
 int	init_all(t_data *data, char **argv)
@@ -105,7 +104,7 @@ int	init_threads(t_data *data)
 	data->start_time = current_time_ms();
 	if (data->num_meals > 0)
 	{
-		if (pthread_create(t0, NULL, &monitor, data->philos[0]))
+		if (pthread_create(t0, NULL, &monitor, &data->philos[0]))
 			return (exit_error("Failed to create thread", data));
 	}
 	i = -1;
@@ -152,7 +151,6 @@ int	main(int argc, char **argv)
 		return (exit_error("Failed to init data", NULL));
 	if (data->num_philos == 1)
 		return(one_philo_routine(&data));
-	pthread_mutex_destroy(&data->print);
-	free(data);
+	clear_data(data);
 	return (EXIT_SUCCESS);
 }

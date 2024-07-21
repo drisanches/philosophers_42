@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 13:28:16 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/21 15:44:48 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:22:54 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,13 @@ void	*routine(void *args)
 	t_philo			*philo;
 
 	philo = (t_philo *)args;
-	philo->time_to_die = philo->data->time_to_die + current_time_ms();
+	philo->time_to_die = philo->data->death_time + current_time_ms();
 	if (pthread_create(&philo->t0, NULL, &supervisor, (void *)philo))
 		return ((void *)EXIT_FAILURE);
 	while (philo->data->is_dead == 0)
 	{
-		
+		eat(philo);
+		print_message(THINKING, philo);
 	}
 	if (pthread_join(philo->t0, NULL))
 		return ((void *)EXIT_FAILURE);

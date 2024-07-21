@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:30 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/21 15:48:12 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:37:46 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ typedef struct s_data
 	int				num_meals;
 	int				is_dead;
 	int				is_finished;
-	long long int	time_to_eat;
-	long long int	time_to_sleep;
-	long long int	time_to_die;
+	long long int	eat_time;
+	long long int	sleep_time;
+	long long int	death_time;
 	long long int	start_time;
 	pthread_t		*threads;
 	t_philo			*philos;
@@ -67,9 +67,13 @@ int				ft_usleep(__useconds_t time);
 /*Threads Routines*/
 int				one_philo_routine(t_data *data);
 void			*routine(void *args);
+void			*supervisor(void *args);
+void			*monitor(void *args);
+void			print_message(char *msg, t_philo *philo);
 
-/*Error Functions*/
+/*Exit Functions*/
 int				exit_error(char *msg, t_data *data);
+void			clear_data(t_data *data);
 
 /*Utils*/
 int				ft_isdigit(int c);
