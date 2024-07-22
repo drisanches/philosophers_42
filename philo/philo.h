@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:30 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/21 18:42:07 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/21 19:13:56 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_data
 
 /*Init Functions*/
 int				alloc_data(t_data *data);
-int				init_data(t_data *data, char **argv);
+int				init_data(t_data **data, char **argv);
 int				init_forks(t_data *data);
 void			init_philos(t_data *data);
 int				init_threads(t_data *data);
