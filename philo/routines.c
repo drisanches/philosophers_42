@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 13:28:16 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/21 18:40:48 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/24 23:42:27 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void    *supervisor(void *args)
 	t_philo *philo;
 
 	philo = (t_philo *)args;
-	while (philo->data->forks == 0)
+	while (philo->data->is_dead == 0)
 	{
 		pthread_mutex_lock(&philo->lock);
 		if (current_time_ms() >= philo->time_to_die && philo->is_eating == 0)
