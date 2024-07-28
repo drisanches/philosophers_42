@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 16:59:54 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/21 17:25:17 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/28 19:14:20 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	eat(t_philo *philo)
 	take_forks(philo);
 	pthread_mutex_lock(&philo->lock);
 	philo->is_eating = 1;
-	philo->time_to_die = current_time_ms() - philo->data->death_time;
+	philo->time_to_die = current_time_ms() + philo->data->death_time;
 	print_message(EATING, philo);
 	philo->eat_count++;
 	ft_usleep(philo->data->eat_time);

@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:40:34 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/21 19:26:08 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/28 19:02:22 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	init_threads(t_data *data)
 	{
 		if (pthread_create(&data->threads[i], NULL, &routine, &data->philos[i]))
 			return (exit_error("Failed to create thread", data));
+		ft_usleep(1);
 	}
 	i = -1;
 	while (++i < data->num_philos)

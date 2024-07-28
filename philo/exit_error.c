@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 23:05:38 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/21 17:37:17 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/28 20:18:39 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ void	clear_data(t_data *data)
 	pthread_mutex_destroy(&data->lock);
 	if (data->threads)
 		free(data->threads);
-	if (data->philos)
-		free(data->philos);
 	if (data->forks)
 		free(data->forks);
+	if (data->philos)
+		free(data->philos);
+	free(data);
 }
 
 int	exit_error(char *msg, t_data *data)

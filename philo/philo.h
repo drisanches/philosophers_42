@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:30 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/21 19:13:56 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/28 19:05:49 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ struct s_data;
 typedef struct s_philo
 {
 	struct s_data	*data;
-	pthread_t		t0;
+	pthread_t		t1;
 	int				id;
 	int				status;
 	int				eat_count;
@@ -69,8 +69,6 @@ int				init_threads(t_data *data);
 
 /*Time Functions*/
 long long int	current_time_ms(void);
-long long int	elapsed_time_ms(long long int start_time);
-int				msleep(long long int time_in_ms);
 int				ft_usleep(__useconds_t time);
 
 /*Threads Routines*/

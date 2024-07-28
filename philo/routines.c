@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 13:28:16 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/24 23:42:27 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/07/28 20:26:10 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@ void    *monitor(void *args)
 	t_philo *philo;
 
 	philo = (t_philo *)args;
-	pthread_mutex_lock(&philo->data->print);
-	printf("data val: %d", philo->data->is_dead);
-	pthread_mutex_unlock(&philo->data->print);
 	while (philo->data->is_dead == 0)
 	{
 		pthread_mutex_lock(&philo->lock);
@@ -86,14 +83,14 @@ void	*routine(void *args)
 
 	philo = (t_philo *)args;
 	philo->time_to_die = philo->data->death_time + current_time_ms();
-	if (pthread_create(&philo->t0, NULL, &supervisor, (void *)philo))
+	if (pthread_create(&philo->t1, NULL, &supervisor, (void *)philo))
 		return ((void *)EXIT_FAILURE);
 	while (philo->data->is_dead == 0)
 	{
 		eat(philo);
 		print_message(THINKING, philo);
 	}
-	if (pthread_join(philo->t0, NULL))
+	if (pthread_join(philo->t1, NULL))
 		return ((void *)EXIT_FAILURE);
 	return ((void *)EXIT_SUCCESS);
 }
