@@ -6,20 +6,19 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 13:28:16 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/10/06 00:06:28 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/06 12:46:20 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void    print_message(char *msg, t_philo *philo)
+void	print_message(char *msg, t_philo *philo)
 {
-	long long int   time;
+	long long int	time;
 
 	pthread_mutex_lock(&philo->data->print);
 	//pthread_mutex_lock(&philo->data->lock);
 	time = current_time_ms() - philo->data->start_time;
-	
 	if (ft_strcmp(DIED, msg) == 0 && philo->data->is_dead == 0)
 	{
 		philo->data->is_dead = 1;
@@ -33,9 +32,9 @@ void    print_message(char *msg, t_philo *philo)
 	pthread_mutex_unlock(&philo->data->print);
 }
 
-void    *monitor(void *args)
+void	*monitor(void *args)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)args;
 	while (1)
@@ -53,9 +52,9 @@ void    *monitor(void *args)
 	return ((void *)EXIT_SUCCESS);
 }
 
-void    *supervisor(void *args)
+void	*supervisor(void *args)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)args;
 	while (philo->data->is_dead == 0)
@@ -89,19 +88,19 @@ void	*routine(void *args)
 		return ((void *)EXIT_FAILURE);
 	while (1)
 	{
-        pthread_mutex_lock(&philo->data->lock);
-        if (philo->data->is_dead)
+		pthread_mutex_lock(&philo->data->lock);
+		if (philo->data->is_dead)
 		{
-            pthread_mutex_unlock(&philo->data->lock);
-            break ;
-        }
-        pthread_mutex_unlock(&philo->data->lock);
-        eat(philo);
-        print_message(THINKING, philo);
-    }
-    if (pthread_join(philo->t1, NULL) != 0)
-        return ((void *)EXIT_FAILURE);
-    return (NULL);
+			pthread_mutex_unlock(&philo->data->lock);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->data->lock);
+		eat(philo);
+		print_message(THINKING, philo);
+	}
+	if (pthread_join(philo->t1, NULL) != 0)
+		return ((void *)EXIT_FAILURE);
+	return (NULL);
 }
 
 void	*single_routine(void *args)
@@ -117,10 +116,11 @@ void	*single_routine(void *args)
 	return (NULL);
 }
 
-int one_philo(t_data *data)
+int	one_philo(t_data *data)
 {
 	data->start_time = current_time_ms();
-	if (pthread_create(&data->threads[0], NULL, &single_routine, &data->philos[0]) != 0)
+	if (pthread_create(&data->threads[0], NULL,
+			&single_routine, &data->philos[0]) != 0)
 		return (exit_error("Failed to create thread", data));
 	pthread_detach(data->threads[0]);
 	while (data->is_dead == 0)

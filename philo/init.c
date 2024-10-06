@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:40:34 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/10/05 23:46:46 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/06 12:25:05 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ int	alloc_data(t_data *data)
 {
 	data->threads = malloc(sizeof(pthread_t) * data->num_philos);
 	if (!data->threads)
-		return(exit_error("Failed to malloc threads", data));
+		return (exit_error("Failed to malloc threads", data));
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philos);
 	if (!data->forks)
-		return(exit_error("Failed to malloc forks", data));
+		return (exit_error("Failed to malloc forks", data));
 	data->philos = malloc(sizeof(t_philo) * data->num_philos);
 	if (!data->philos)
-		return(exit_error("Failed to malloc philosophers", data));
+		return (exit_error("Failed to malloc philosophers", data));
 	return (EXIT_SUCCESS);
 }
 
@@ -56,7 +56,7 @@ int	init_data(t_data *data, char **argv)
 		data->num_meals = 0;
 	if (data->num_philos <= 0 || data->num_philos > 200 || data->death_time < 0 
 		|| data->eat_time < 0 || data->sleep_time < 0)
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	data->start_time = current_time_ms();
 	data->is_dead = 0;
 	data->is_finished = 0;
@@ -68,7 +68,7 @@ int	init_data(t_data *data, char **argv)
 void	init_philos(t_data *data)
 {
 	int	i;
-	
+
 	i = -1;
 	while (++i < data->num_philos)
 	{

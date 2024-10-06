@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 23:05:38 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/08/10 23:48:53 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/06 12:27:34 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	clear_data(t_data *data)
 
 int	exit_error(char *msg, t_data *data)
 {
-	printf("%s\n", msg);	
+	printf("%s\n", msg);
 	if (data)
 		clear_data(data);
 	return (EXIT_FAILURE);

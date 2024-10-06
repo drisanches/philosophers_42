@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:30 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/10/05 23:16:59 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/06 12:23:50 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define THINKING "is thinking"
 # define DIED "died"
 
-struct s_data;
+struct	s_data;
 
 typedef struct s_philo
 {
