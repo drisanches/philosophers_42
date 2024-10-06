@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:40:34 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/10/06 17:26:30 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/06 18:31:32 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,24 @@ void	init_philos(t_data *data)
 		data->philos[i].data = data;
 		pthread_mutex_init(&data->philos[i].lock, NULL);
 	}
-	//pthread_mutex_init(&data->philos->is_dead_check, NULL);
+}
+
+int	join_threads(t_data *data, pthread_t monitor)
+{
+	int	i;
+
+	if (data->num_meals > 0)
+	{
+		if (pthread_join(monitor, NULL) != 0)
+			return (exit_error("Failed to join thread", data));
+	}
+	i = -1;
+	while (++i < data->num_philos)
+	{
+		if (pthread_join(data->threads[i], NULL))
+			return (exit_error("Failed to join thread", data));
+	}
+	return (EXIT_SUCCESS);
 }
 
 int	init_threads(t_data *data)
@@ -99,15 +116,8 @@ int	init_threads(t_data *data)
 	{
 		if (pthread_create(&data->threads[i], NULL, &routine, &data->philos[i]))
 			return (exit_error("Failed to create thread", data));
-		//ft_usleep(1);
 	}
-	i = -1;
-	if (pthread_join(monitor_thread, NULL) != 0)
-		return (exit_error("Failed to join thread", data));
-	while (++i < data->num_philos)
-	{
-		if (pthread_join(data->threads[i], NULL))
-			return (exit_error("Failed to join thread", data));
-	}
+	if (join_threads(data, monitor_thread))
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

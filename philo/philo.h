@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:30 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/10/06 16:22:21 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/06 18:29:45 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct s_philo
 	int				is_eating;
 	long long int	time_to_die;
 	pthread_mutex_t	lock;
-	//pthread_mutex_t	is_dead_check;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 }					t_philo;
@@ -67,6 +66,7 @@ int				init_data(t_data *data, char **argv);
 int				init_forks(t_data *data);
 void			init_philos(t_data *data);
 int				init_threads(t_data *data);
+int				join_threads(t_data *data, pthread_t monitor);
 
 /*Time Functions*/
 long long int	current_time_ms(void);
