@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:40:34 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/10/06 12:25:05 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/06 12:49:03 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	init_data(t_data *data, char **argv)
 		data->num_meals = (int)ft_atol(argv[5]);
 	else
 		data->num_meals = 0;
-	if (data->num_philos <= 0 || data->num_philos > 200 || data->death_time < 0 
+	if (data->num_philos <= 0 || data->num_philos > 200 || data->death_time < 0
 		|| data->eat_time < 0 || data->sleep_time < 0)
 		return (EXIT_FAILURE);
 	data->start_time = current_time_ms();
@@ -82,6 +82,7 @@ void	init_philos(t_data *data)
 	}
 	pthread_mutex_init(&data->philos->is_dead_check, NULL); //adicionado
 }
+
 int	init_threads(t_data *data)
 {
 	pthread_t	monitor_thread;
