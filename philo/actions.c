@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 16:59:54 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/28 19:14:20 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/05 23:00:09 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,34 @@
 
 void	take_forks(t_philo *philo)
 {
-	pthread_mutex_lock(philo->right_fork);
-	print_message(FORKS_TAKEN, philo);
-	pthread_mutex_lock(philo->left_fork);
-	print_message(FORKS_TAKEN, philo);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_message(FORKS_TAKEN, philo);
+		pthread_mutex_lock(philo->right_fork);
+		print_message(FORKS_TAKEN, philo);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->right_fork);
+		print_message(FORKS_TAKEN, philo);
+		pthread_mutex_lock(philo->left_fork);
+		print_message(FORKS_TAKEN, philo);
+	}
 }
 
 void	drop_forks(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+	}
 	print_message(SLEEPING, philo);
 	ft_usleep(philo->data->sleep_time);
 }

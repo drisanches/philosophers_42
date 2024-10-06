@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:40:34 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/28 19:02:22 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/05 23:46:46 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,24 @@ int	init_forks(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-int	init_data(t_data **data, char **argv)
+int	init_data(t_data *data, char **argv)
 {
-	*data = malloc(sizeof(t_data));
-	if (!(*data))
-		return (EXIT_FAILURE);
-	(*data)->num_philos = (int)ft_atol(argv[1]);
-	(*data)->death_time = ft_atol(argv[2]);
-	(*data)->eat_time = ft_atol(argv[3]);
-	(*data)->sleep_time = ft_atol(argv[4]);
+	data->num_philos = (int)ft_atol(argv[1]);
+	data->death_time = ft_atol(argv[2]);
+	data->eat_time = ft_atol(argv[3]);
+	data->sleep_time = ft_atol(argv[4]);
 	if (argv[5])
-		(*data)->num_meals = (int)ft_atol(argv[5]);
+		data->num_meals = (int)ft_atol(argv[5]);
 	else
-		(*data)->num_meals = 0;
-	if ((*data)->num_philos <= 0 || (*data)->num_philos > 200 || (*data)->death_time < 0 
-		|| (*data)->eat_time < 0 || (*data)->sleep_time < 0)
+		data->num_meals = 0;
+	if (data->num_philos <= 0 || data->num_philos > 200 || data->death_time < 0 
+		|| data->eat_time < 0 || data->sleep_time < 0)
 		return(EXIT_FAILURE);
-	(*data)->start_time = current_time_ms();
-	(*data)->is_dead = 0;
-	(*data)->is_finished = 0;
-	pthread_mutex_init(&(*data)->print, NULL);
-	pthread_mutex_init(&(*data)->lock, NULL);
+	data->start_time = current_time_ms();
+	data->is_dead = 0;
+	data->is_finished = 0;
+	pthread_mutex_init(&data->print, NULL);
+	pthread_mutex_init(&data->lock, NULL);
 	return (EXIT_SUCCESS);
 }
 
@@ -83,24 +80,26 @@ void	init_philos(t_data *data)
 		data->philos[i].data = data;
 		pthread_mutex_init(&data->philos[i].lock, NULL);
 	}
+	pthread_mutex_init(&data->philos->is_dead_check, NULL); //adicionado
 }
 int	init_threads(t_data *data)
 {
-	pthread_t	t0;
+	pthread_t	monitor_thread;
 	int			i;
 
 	data->start_time = current_time_ms();
 	if (data->num_meals > 0)
 	{
-		if (pthread_create(&t0, NULL, &monitor, &data->philos[0]))
+		if (pthread_create(&monitor_thread, NULL, &monitor, &data->philos[0]))
 			return (exit_error("Failed to create thread", data));
+		pthread_detach(monitor_thread);
 	}
 	i = -1;
 	while (++i < data->num_philos)
 	{
 		if (pthread_create(&data->threads[i], NULL, &routine, &data->philos[i]))
 			return (exit_error("Failed to create thread", data));
-		ft_usleep(1);
+		//ft_usleep(1);
 	}
 	i = -1;
 	while (++i < data->num_philos)

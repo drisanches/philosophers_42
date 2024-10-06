@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 22:58:30 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/07/28 19:05:49 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/05 23:16:59 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_philo
 	int				is_eating;
 	long long int	time_to_die;
 	pthread_mutex_t	lock;
+	pthread_mutex_t	is_dead_check;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 }					t_philo;
@@ -62,7 +63,7 @@ typedef struct s_data
 
 /*Init Functions*/
 int				alloc_data(t_data *data);
-int				init_data(t_data **data, char **argv);
+int				init_data(t_data *data, char **argv);
 int				init_forks(t_data *data);
 void			init_philos(t_data *data);
 int				init_threads(t_data *data);
@@ -72,7 +73,8 @@ long long int	current_time_ms(void);
 int				ft_usleep(__useconds_t time);
 
 /*Threads Routines*/
-int				one_philo_routine(t_data *data);
+int				one_philo(t_data *data);
+void			*single_routine(void *args);
 void			*routine(void *args);
 void			*supervisor(void *args);
 void			*monitor(void *args);

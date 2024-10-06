@@ -6,7 +6,7 @@
 #    By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/28 11:27:02 by dde-fati          #+#    #+#              #
-#    Updated: 2024/07/21 18:59:42 by dde-fati         ###   ########.fr        #
+#    Updated: 2024/10/06 00:20:28 by dde-fati         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,13 +17,13 @@ OBJ_FOLDER := obj
 OBJ := $(SRC:%.c=$(OBJ_FOLDER)/%.o)
 
 CC := cc
-FLAGS := -Wall -Wextra -Werror -g3
+FLAGS := -Wall -Wextra -Werror -fsanitize=thread
 RM := rm -rf
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	@$(CC) $(OBJ) -o $(NAME) -pthread
+$(NAME): $(OBJ) 
+	@$(CC) $(OBJ) -o $(NAME) -pthread -fsanitize=thread
 	@echo "$(GR)Philosophers are ready!$(EN)"
 
 $(OBJ_FOLDER)/%.o: %.c
