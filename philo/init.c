@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:40:34 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/10/06 12:49:03 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/06 17:26:30 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	init_philos(t_data *data)
 		data->philos[i].data = data;
 		pthread_mutex_init(&data->philos[i].lock, NULL);
 	}
-	pthread_mutex_init(&data->philos->is_dead_check, NULL); //adicionado
+	//pthread_mutex_init(&data->philos->is_dead_check, NULL);
 }
 
 int	init_threads(t_data *data)
@@ -93,7 +93,6 @@ int	init_threads(t_data *data)
 	{
 		if (pthread_create(&monitor_thread, NULL, &monitor, &data->philos[0]))
 			return (exit_error("Failed to create thread", data));
-		pthread_detach(monitor_thread);
 	}
 	i = -1;
 	while (++i < data->num_philos)
@@ -103,6 +102,8 @@ int	init_threads(t_data *data)
 		//ft_usleep(1);
 	}
 	i = -1;
+	if (pthread_join(monitor_thread, NULL) != 0)
+		return (exit_error("Failed to join thread", data));
 	while (++i < data->num_philos)
 	{
 		if (pthread_join(data->threads[i], NULL))

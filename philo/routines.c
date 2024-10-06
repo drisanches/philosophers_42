@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 13:28:16 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/10/06 12:46:20 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/06 17:41:32 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@ void	print_message(char *msg, t_philo *philo)
 	long long int	time;
 
 	pthread_mutex_lock(&philo->data->print);
-	//pthread_mutex_lock(&philo->data->lock);
 	time = current_time_ms() - philo->data->start_time;
+	pthread_mutex_lock(&philo->data->lock);
 	if (ft_strcmp(DIED, msg) == 0 && philo->data->is_dead == 0)
 	{
-		philo->data->is_dead = 1;
 		printf("%llu %d %s\n", time, philo->id, msg);
+		philo->data->is_dead = 1;
 	}
 	else if (!philo->data->is_dead)
 	{
 		printf("%llu %d %s\n", time, philo->id, msg);
 	}
-	//pthread_mutex_unlock(&philo->data->lock);
+	pthread_mutex_unlock(&philo->data->lock);
 	pthread_mutex_unlock(&philo->data->print);
 }
 
@@ -49,16 +49,20 @@ void	*monitor(void *args)
 		}
 		pthread_mutex_unlock(&philo->data->lock);
 	}
+	print_message("estamos aqui monitor\n", philo);
+	//printf("estamos aqui monitor\n");
 	return ((void *)EXIT_SUCCESS);
 }
 
-void	*supervisor(void *args)
+/*void	*supervisor(void *args)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)args;
+	pthread_mutex_lock(&philo->data->lock);
 	while (philo->data->is_dead == 0)
 	{
+		pthread_mutex_unlock(&philo->data->lock);
 		pthread_mutex_lock(&philo->lock);
 		if (current_time_ms() >= philo->time_to_die && philo->is_eating == 0)
 		{
@@ -74,7 +78,41 @@ void	*supervisor(void *args)
 			pthread_mutex_unlock(&philo->data->lock);
 		}
 		pthread_mutex_unlock(&philo->lock);
+		pthread_mutex_lock(&philo->data->lock);
 	}
+	return ((void *)EXIT_SUCCESS);
+}*/
+
+void	*supervisor(void *args)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)args;
+	while (1)
+	{
+		pthread_mutex_lock(&philo->data->lock);
+		if (philo->data->is_dead == 0)
+		{
+			pthread_mutex_unlock(&philo->data->lock);
+			pthread_mutex_lock(&philo->lock);
+			if (current_time_ms() >= philo->time_to_die && philo->is_eating == 0)
+			{
+				pthread_mutex_unlock(&philo->lock);
+				print_message(DIED, philo);
+				break ;
+			}
+			else if (philo->eat_count == philo->data->num_meals)
+			{
+				pthread_mutex_lock(&philo->data->lock);
+				philo->data->is_finished++;
+				philo->eat_count++;
+				pthread_mutex_unlock(&philo->data->lock);
+			}
+			pthread_mutex_unlock(&philo->lock);
+		}
+	}
+	print_message("estamos aqui super\n", philo);
+	//printf("estamos aqui super\n");
 	return ((void *)EXIT_SUCCESS);
 }
 
@@ -98,10 +136,31 @@ void	*routine(void *args)
 		eat(philo);
 		print_message(THINKING, philo);
 	}
+	print_message("estamos aqui routine\n", philo);
 	if (pthread_join(philo->t1, NULL) != 0)
 		return ((void *)EXIT_FAILURE);
 	return (NULL);
 }
+
+/*void	*routine(void *args)
+{
+	t_philo			*philo;
+
+	philo = (t_philo *)args;
+	philo->time_to_die = philo->data->death_time + current_time_ms();
+	if (pthread_create(&philo->t1, NULL, &supervisor, philo) != 0)
+		return ((void *)EXIT_FAILURE);
+	pthread_mutex_lock(&philo->data->lock);
+	while (philo->data->is_dead == 0)
+	{
+		pthread_mutex_unlock(&philo->data->lock);
+		eat(philo);
+		print_message(THINKING, philo);
+	}
+	if (pthread_join(philo->t1, NULL) != 0)
+		return ((void *)EXIT_FAILURE);
+	return (NULL);
+}*/
 
 void	*single_routine(void *args)
 {
