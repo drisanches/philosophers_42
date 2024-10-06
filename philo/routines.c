@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 13:28:16 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/10/06 18:21:49 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/06 19:30:33 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,14 @@ void	*monitor(void *args)
 			philo->data->is_dead = 1;
 		if (philo->data->is_dead)
 		{
+			printf("estamos aqui monitor break\n");
 			pthread_mutex_unlock(&philo->data->lock);
 			break ;
 		}
 		pthread_mutex_unlock(&philo->data->lock);
 	}
-	print_message("estamos aqui monitor\n", philo);
-	//printf("estamos aqui monitor\n");
+	//print_message("estamos aqui monitor\n", philo);
+	printf("estamos aqui monitor\n");
 	return ((void *)EXIT_SUCCESS);
 }
 
@@ -101,18 +102,20 @@ void	*supervisor(void *args)
 				print_message(DIED, philo);
 				break ;
 			}
-			else if (philo->eat_count == philo->data->num_meals)
+			if (philo->eat_count && philo->eat_count == philo->data->num_meals)
 			{
 				pthread_mutex_lock(&philo->data->lock);
 				philo->data->is_finished++;
 				philo->eat_count++;
+				printf("is_finished: %d\n", philo->data->is_finished);
+				printf("eat_count: %d\n", philo->eat_count);
 				pthread_mutex_unlock(&philo->data->lock);
 			}
 			pthread_mutex_unlock(&philo->lock);
 		}
 	}
-	print_message("estamos aqui super\n", philo);
-	//printf("estamos aqui super\n");
+	//print_message("estamos aqui super\n", philo);
+	printf("estamos aqui super\n");
 	return ((void *)EXIT_SUCCESS);
 }
 
@@ -124,21 +127,24 @@ void	*routine(void *args)
 	philo->time_to_die = philo->data->death_time + current_time_ms();
 	if (pthread_create(&philo->t1, NULL, &supervisor, philo) != 0)
 		return ((void *)EXIT_FAILURE);
+	printf("estamos aqui routine 1\n");
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data->lock);
 		if (philo->data->is_dead)
 		{
 			pthread_mutex_unlock(&philo->data->lock);
+			printf("estamos aqui routine break\n");
 			break ;
 		}
 		pthread_mutex_unlock(&philo->data->lock);
 		eat(philo);
 		print_message(THINKING, philo);
 	}
-	print_message("estamos aqui routine\n", philo);
 	if (pthread_join(philo->t1, NULL) != 0)
 		return ((void *)EXIT_FAILURE);
+	//print_message("estamos aqui routine\n", philo);
+	printf("estamos aqui routine 2\n");
 	return (NULL);
 }
 

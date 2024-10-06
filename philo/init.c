@@ -6,7 +6,7 @@
 /*   By: dde-fati <dde-fati@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:40:34 by dde-fati          #+#    #+#             */
-/*   Updated: 2024/10/06 18:31:32 by dde-fati         ###   ########.fr       */
+/*   Updated: 2024/10/06 19:36:29 by dde-fati         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ void	init_philos(t_data *data)
 	}
 }
 
-int	join_threads(t_data *data, pthread_t monitor)
+int	join_threads(t_data *data, pthread_t *monitor)
 {
 	int	i;
 
 	if (data->num_meals > 0)
 	{
-		if (pthread_join(monitor, NULL) != 0)
+		if (pthread_join(*monitor, NULL) != 0)
 			return (exit_error("Failed to join thread", data));
 	}
 	i = -1;
@@ -117,7 +117,7 @@ int	init_threads(t_data *data)
 		if (pthread_create(&data->threads[i], NULL, &routine, &data->philos[i]))
 			return (exit_error("Failed to create thread", data));
 	}
-	if (join_threads(data, monitor_thread))
+	if (join_threads(data, &monitor_thread))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
